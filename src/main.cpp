@@ -103,7 +103,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-  
+    {"Joshy\n\nJoshua Nolan is a nerd", JOSHY},
     {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
     {"Skills\n\nSkills - Auton", skills},
     

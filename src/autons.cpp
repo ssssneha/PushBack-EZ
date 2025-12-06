@@ -378,7 +378,6 @@ void measure_offsets() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
-
 void eightBlockM() {
   intakingStore(127);
 
@@ -685,5 +684,14 @@ void sevenBlockL(){
   chassis.pid_wait();
 }
 
+void JOSHY(){
+  // here
+  chassis.pid_turn_set({-3_in,30_in}, fwd,100);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{-3_in, 30_in}, fwd, 90});
+  chassis.pid_wait();
+  chassis.pid_turn_set(180,127);
+  chassis.pid_wait();
+}
 //chassis.odom_x_flip();
 //chassis.odom_theta_flip();
