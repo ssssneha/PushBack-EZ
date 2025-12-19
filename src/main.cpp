@@ -1,5 +1,7 @@
 #include "main.h"
 #include "autons.hpp"
+#include "pros/misc.h"
+#include "subsystems.hpp"
 
 /////
 // For installation, upgrading, documentations, and tutorials, check out our website!
@@ -11,18 +13,21 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 // Chassis constructor
 ez::Drive chassis(
   // These are your drive motors, the first motor is used for sensing!
-  {-17, -18, -20},     // Left Chassis Ports (negative port will reverse it!)
-  {16, 15, 14},  // Right Chassis Ports (negative port will reverse it!)
+  {-11, -12, -13},     // Left Chassis Ports (negative port will reverse it!)
+  {20, 19, 18},  // Right Chassis Ports (negative port will reverse it!)
 
-  19,      // IMU Port
+  14,      // IMU Port
   3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
   450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
+  //rotation1: 15
+  //rotation2: 17
+
 bool heightState = false;
 bool doinkerState = false;
-bool podState = false;
 bool wingState = false;
-bool parkState = false;
+bool parkState50 = false;
+bool parkState100 = false;
 
 void toggleHeight() {
     heightState = !heightState;  // Toggle state
@@ -36,21 +41,21 @@ void toggleDoinker() {
     pros::delay(10);
 }
 
-void togglePod() {
-    podState = !podState;
-    pod.set_value(podState);
-    pros::delay(10);
-}
-
 void toggleWings() {
     wingState = !wingState;
     wing.set_value(wingState);
     pros::delay(10);
 }
 
-void togglePark() {
-    parkState = !parkState;
-    dblPark.set_value(parkState);
+void togglePark50() {
+    parkState50 = !parkState50;
+    dblPark50.set_value(parkState50);
+    pros::delay(10);
+}
+
+void togglePark100() {
+    parkState100 = !parkState100;
+    dblPark100.set_value(parkState100);
     pros::delay(10);
 }
 
@@ -71,7 +76,8 @@ void intakeStop() {
     intake2.brake();
 }
 
-ez::tracking_wheel horiz_tracker(-11, 2.75, 2.5); 
+ez::tracking_wheel horiz_tracker(-17, 2.00, 0.5); 
+ez::tracking_wheel vert_tracker(15, 2.00, 1);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -87,6 +93,7 @@ void initialize() {
 
   // Configure your tracking wheels
   chassis.odom_tracker_back_set(&horiz_tracker);
+  chassis.odom_tracker_left_set(&vert_tracker);
 
 
   // Configure your chassis controls
@@ -277,6 +284,7 @@ void ez_template_extras() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  int parkCounter = 0;
 
   while (true) {
     // Gives you some extras to make EZ-Template ezier
@@ -293,28 +301,31 @@ void opcontrol() {
     // Intake Controls
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             // outtake top, intake bottom
-            intake1.move(127*0.85);
-            intake2.move(127*0.50);
+            intake1.move(-127*0.85);
+            intake2.move(127*0.40);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
             // outtake both
-            intake1.move(-127);
-            intake2.move(127*0.80);
+            intake1.move(127);
+            intake2.move(-127*0.80);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             // intake both
-            intake1.move(127*0.85);
-            intake2.move(-127);
+            height.set_value(true);
+            intake1.move(-127*0.85);
+            intake2.move(127);
+        }
+        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+          // outtake both
+            intake1.move(-127);
+            intake2.move(-127*0.80);
         }
         else{
+            height.set_value(false);
             intake1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
             intake1.brake();
             intake2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
             intake2.brake();
-        }
-
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
-            toggleHeight();
         }
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
@@ -325,8 +336,24 @@ void opcontrol() {
             toggleWings();
         }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
-            togglePark();
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
+          if (parkCounter == 1){  
+            togglePark50();
+            parkCounter++;
+          }
+          else if (parkCounter == 2){
+            togglePark100();
+            parkCounter++;
+          }
+          else {
+            parkCounter = 1;
+          }
+        }
+
+        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
+          dblPark100.set_value(false);
+          dblPark50.set_value(false);
+          pros::delay(0.5);
         }
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
