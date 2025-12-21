@@ -2,6 +2,7 @@
 
 #include "EZ-Template/api.hpp"
 #include "api.h"
+#include "pros/adi.hpp"
 
 extern Drive chassis;
 
@@ -10,15 +11,16 @@ extern Drive chassis;
 // inline pros::Motor intake(1);
 // inline pros::adi::DigitalIn limit_switch('A');
 
-inline pros::Motor intake1(10, pros::MotorGearset::blue);
-inline pros::Motor intake2(12, pros::MotorGearset::blue);
+inline pros::Motor intake1(-1, pros::MotorGearset::blue);
+inline pros::Motor intake2(-10, pros::MotorGearset::blue);
 
-inline pros::Optical detector(13);
-inline pros::ADIDigitalOut height('B');
-inline pros::ADIDigitalOut doinker('C');
-inline pros::ADIDigitalOut pod('D');
-inline pros::ADIDigitalOut wing('A');
-inline pros::ADIDigitalOut dblPark('E');
+inline pros::Optical detector(2);
+inline pros::ADIDigitalOut height('A');
+inline pros::ADIDigitalOut doinker('E');
+//inline pros::ADIDigitalOut pod('-');
+inline pros::ADIDigitalOut wing('B');
+inline pros::ADIDigitalOut dblPark('C');
+inline pros::ADIDigitalOut aligner('D');
 
 void toggleHeight();
 void toggleDoinker();

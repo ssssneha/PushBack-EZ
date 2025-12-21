@@ -11,10 +11,10 @@ pros::Controller controller(pros::E_CONTROLLER_MASTER);
 // Chassis constructor
 ez::Drive chassis(
   // These are your drive motors, the first motor is used for sensing!
-  {-17, -18, -20},     // Left Chassis Ports (negative port will reverse it!)
-  {16, 15, 14},  // Right Chassis Ports (negative port will reverse it!)
+  {-11, -12, -13},     // Left Chassis Ports (negative port will reverse it!)
+  {20, 19, 18},  // Right Chassis Ports (negative port will reverse it!)
 
-  19,      // IMU Port
+  14,      // IMU Port
   3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
   450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
@@ -33,12 +33,6 @@ void toggleHeight() {
 void toggleDoinker() {
     doinkerState = !doinkerState;  // Toggle state
     doinker.set_value(doinkerState);
-    pros::delay(10);
-}
-
-void togglePod() {
-    podState = !podState;
-    pod.set_value(podState);
     pros::delay(10);
 }
 
@@ -291,43 +285,49 @@ void opcontrol() {
     chassis.opcontrol_tank();  // Tank control
 
     // Intake Controls
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
-            // outtake top, intake bottom
-            intake1.move(127*0.85);
-            intake2.move(127*0.50);
-        }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
-            // outtake both
-            intake1.move(-127);
-            intake2.move(127*0.80);
-        }
-        else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
-            // intake both
-            intake1.move(127*0.85);
-            intake2.move(-127);
-        }
-        else{
-            intake1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-            intake1.brake();
-            intake2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
-            intake2.brake();
-        }
+    if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
+        // outtake top, intake bottom
+        intake1.move(127*0.85);
+        intake2.move(-127*0.50);
+    }
+    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
+        // outtake both
+        intake1.move(-127);
+        intake2.move(127*0.80);
+    }
+    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L2)) {
+        // outtake top, intake bottom
+        intake1.move(-127*0.85);
+        intake2.move(-127*0.50);
+    }
+    else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
+        // intake both
+        toggleHeight();
+        intake1.move(127*0.85);
+        intake2.move(-127);
+    }
+    else{
+        intake1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+        intake1.brake();
+        intake2.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+        intake2.brake();
+    }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
-            toggleHeight();
-        }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_Y)){
+        toggleHeight();
+    }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
-            toggleDoinker();
-        }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT)){
+        toggleDoinker();
+    }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
-            toggleWings();
-        }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_DOWN)){
+        toggleWings();
+    }
 
-        if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
-            togglePark();
-        }
+    if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_B)){
+        togglePark();
+    }
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
