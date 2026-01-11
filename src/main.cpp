@@ -1,4 +1,7 @@
 #include "main.h"
+#include <cstdio>
+#include <string>
+#include "EZ-Template/sdcard.hpp"
 #include "autons.hpp"
 #include "pros/misc.h"
 #include "subsystems.hpp"
@@ -76,8 +79,8 @@ void intakeStop() {
     intake2.brake();
 }
 
-ez::tracking_wheel horiz_tracker(-17, 2.00, 0.5); 
-ez::tracking_wheel vert_tracker(15, 2.00, 1);
+ez::tracking_wheel horiz_tracker(-17, 2.00, 0.6); 
+ez::tracking_wheel vert_tracker(15, 2.00, 2.94);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -110,7 +113,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    {"Joshy\n\nJoshua Nolan is a nerd", JOSHY},
+    {"Test\n\nPid tuning", test},
     {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
     {"Skills\n\nSkills - Auton", skills},
     
@@ -189,6 +192,8 @@ void screen_print_tracker(ez::tracking_wheel *tracker, std::string name, int lin
     tracker_width = "  width: " + util::to_string_with_precision(tracker->distance_to_center_get());  // Make text for the distance to center
   }
   ez::screen_print(tracker_value + tracker_width, line);  // Print final tracker text
+  // string tracker_info = tracker_value + tracker_width;
+  //printf("%s", tracker_info.c_str());
 }
 
 /**
@@ -229,6 +234,7 @@ void ez_screen_task() {
   }
 }
 pros::Task ezScreenTask(ez_screen_task);
+
 
 /**
  * Gives you some extras to run in your opcontrol:
@@ -286,15 +292,15 @@ void opcontrol() {
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
   int parkCounter = 0;
 
+
   while (true) {
+
     // Gives you some extras to make EZ-Template ezier
     ez_template_extras();
 
     // Trigger the selected autonomous routine
     if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
       autonomous();
-
-
 
     chassis.opcontrol_tank();  // Tank control
 
@@ -338,14 +344,18 @@ void opcontrol() {
 
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_UP)){
           if (parkCounter == 1){  
-            togglePark50();
+            dblPark50.set_value(true);
+            dblPark100.set_value(false);
             parkCounter++;
           }
           else if (parkCounter == 2){
-            togglePark100();
-            parkCounter++;
+            dblPark100.set_value(true);
+            dblPark50.set_value(true);
+            parkCounter = 1;
           }
-          else {
+          else{
+            dblPark50.set_value(false);
+            dblPark100.set_value(false);
             parkCounter = 1;
           }
         }
@@ -353,7 +363,7 @@ void opcontrol() {
         if (controller.get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT)){
           dblPark100.set_value(false);
           dblPark50.set_value(false);
-          pros::delay(0.5);
+          pros::delay(5);
         }
 
     pros::delay(ez::util::DELAY_TIME);  // This is used for timer calculations!  Keep this ez::util::DELAY_TIME

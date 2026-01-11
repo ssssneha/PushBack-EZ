@@ -20,4 +20,4 @@ void eightBlockM();
 void skills();
 void sevenBlockM();
 void sevenBlockL();
-void JOSHY();
+void test();

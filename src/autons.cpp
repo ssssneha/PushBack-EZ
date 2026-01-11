@@ -1,3 +1,4 @@
+#include <cstdio>
 #include "main.h"
 #include "pros/rtos.hpp"
 #include "subsystems.hpp"
@@ -19,7 +20,7 @@ void default_constants() {
   // P, I, D, and Start I
   chassis.pid_drive_constants_set(20.0, 0.0, 100.0);         // Fwd/rev constants, used for odom and non odom motions
   chassis.pid_heading_constants_set(11.0, 0.0, 20.0);        // Holds the robot straight while going forward without odom
-  chassis.pid_turn_constants_set(3.0, 0.05, 20.0, 15.0);     // Turn in place constants
+  chassis.pid_turn_constants_set(3.7, 0.005, 34.5, 7);     // Turn in place constants
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
@@ -360,6 +361,7 @@ void measure_offsets() {
     r_offset += r_delta / t_delta;
     b_offset += b_delta / t_delta;
     f_offset += f_delta / t_delta;
+
   }
 
   // Average all offsets
@@ -373,6 +375,11 @@ void measure_offsets() {
   if (chassis.odom_tracker_right != nullptr) chassis.odom_tracker_right->distance_to_center_set(r_offset);
   if (chassis.odom_tracker_back != nullptr) chassis.odom_tracker_back->distance_to_center_set(b_offset);
   if (chassis.odom_tracker_front != nullptr) chassis.odom_tracker_front->distance_to_center_set(f_offset);
+  
+  // printf("L: %lf\n", l_offset);
+  // printf("R: %lf\n", r_offset);
+  // printf("B: %lf\n", b_offset);
+  // printf("F: %lf\n", f_offset);
 }
 
 // . . .
@@ -684,13 +691,10 @@ void sevenBlockL(){
   chassis.pid_wait();
 }
 
-void JOSHY(){
-  // here
-  chassis.pid_turn_set({-3_in,30_in}, fwd,100);
-  chassis.pid_wait();
-  chassis.pid_odom_set({{-3_in, 30_in}, fwd, 90});
-  chassis.pid_wait();
-  chassis.pid_turn_set(180,127);
+void test(){
+  //chassis.pid_odom_set({{0_in, 5_in}, fwd, 127});
+  //chassis.pid_wait();
+  chassis.pid_turn_set(180_deg, 127);
   chassis.pid_wait();
 }
 //chassis.odom_x_flip();
