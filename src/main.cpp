@@ -63,13 +63,18 @@ void togglePark100() {
 }
 
 void intaking(double speed) {
-    intake1.move(speed);
-    intake2.move(-speed*0.80);
+    intake1.move(-speed);
+    intake2.move(speed*0.80);
 }
 
 void intakingStore(double speed) {
-    intake1.move(speed);
-    intake2.move(speed*0.5);
+    intake1.move(-speed);
+    intake2.move(0);
+}
+
+void intakeMid(double speed) {
+    intake1.move(-speed*0.7);
+    intake2.move(-speed*0.6);
 }
 
 void intakeStop() {
@@ -79,8 +84,8 @@ void intakeStop() {
     intake2.brake();
 }
 
-ez::tracking_wheel horiz_tracker(-17, 2.00, 0.6); 
-ez::tracking_wheel vert_tracker(15, 2.00, 2.94);
+ez::tracking_wheel horiz_tracker(17, 2.00, 0.6); 
+ez::tracking_wheel vert_tracker(-15, 2.00, 2.94);
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -113,9 +118,9 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    {"Test\n\nPid tuning", test},
-    {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
     {"Skills\n\nSkills - Auton", skills},
+    {"Test\n\nPid tuning", fourBlockR},
+    {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
     
   });
 
@@ -164,7 +169,7 @@ void autonomous() {
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
-
+  chassis.odom_reset();
   /*
   Odometry and Pure Pursuit are not magic
 
@@ -299,8 +304,8 @@ void opcontrol() {
     ez_template_extras();
 
     // Trigger the selected autonomous routine
-    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
-      autonomous();
+    // if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN))
+    //   autonomous();
 
     chassis.opcontrol_tank();  // Tank control
 
@@ -318,13 +323,13 @@ void opcontrol() {
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             // intake both
             height.set_value(true);
-            intake1.move(-127*0.85);
+            intake1.move(-127); //*0.75 //*0.85
             intake2.move(127);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
           // outtake both
-            intake1.move(-127);
-            intake2.move(-127*0.80);
+            intake1.move(-127*0.85); //*0.85 //*1
+            intake2.move(-127*0.75); //*0.40 //*0.65
         }
         else{
             height.set_value(false);

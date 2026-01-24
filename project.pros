@@ -1,7 +1,7 @@
 {
   "py/object": "pros.conductor.project.Project",
   "py/state": {
-    "project_name": "EZ-PushBack",
+    "project_name": "Skills - EZ",
     "target": "v5",
     "templates": {
       "EZ-Template": {

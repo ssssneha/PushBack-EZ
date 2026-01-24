@@ -29,3 +29,4 @@ void togglePark100();
 void intaking(double speed);
 void intakingStore(double speed);
 void intakeStop();
+void intakeMid(double speed);
