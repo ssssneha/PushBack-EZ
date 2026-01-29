@@ -77,6 +77,11 @@ void intakeMid(double speed) {
     intake2.move(-speed*0.6);
 }
 
+void intakeMidSkills(double speed){
+    intake1.move(-speed*0.7);
+    intake2.move(-speed*0.6);
+}
+
 void intakeStop() {
     intake1.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
     intake1.brake();

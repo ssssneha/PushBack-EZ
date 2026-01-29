@@ -482,12 +482,12 @@ void skills() {
 
   chassis.pid_turn_set({0_in, 35_in}, rev, 127);
   chassis.pid_wait();
-  chassis.pid_odom_set({{0_in, 35_in, 45_deg}, rev, 127});
+  chassis.pid_odom_set({{0_in, 35_in}, rev, 127});
   chassis.pid_wait();
 
   intakeMid(-127);
   pros::delay(100);
-  intakeMid(127);
+  intakeMid(45);
   
 }
 
