@@ -3,6 +3,7 @@
 #include <string>
 #include "EZ-Template/sdcard.hpp"
 #include "autons.hpp"
+#include "pros/distance.hpp"
 #include "pros/misc.h"
 #include "subsystems.hpp"
 
@@ -12,6 +13,7 @@
 /////
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
+
 
 // Chassis constructor
 ez::Drive chassis(
@@ -92,6 +94,8 @@ void intakeStop() {
 ez::tracking_wheel horiz_tracker(17, 2.00, 0.6); 
 ez::tracking_wheel vert_tracker(-15, 2.00, 2.94);
 
+
+
 /**
  * Runs initialization code. This occurs as soon as the program is started.
  *
@@ -123,6 +127,7 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"Four and Three\n\nLeft", fourThreeL},
     {"Skills\n\nSkills - Auton", skills},
     {"Test\n\nPid tuning", fourBlockR},
     {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
@@ -267,11 +272,11 @@ void ez_template_extras() {
       chassis.pid_tuner_toggle();
 
     // Trigger the selected autonomous routine
-    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
-      pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
-      autonomous();
-      chassis.drive_brake_set(preference);
-    }
+    // if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+    //   pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
+    //   autonomous();
+    //   chassis.drive_brake_set(preference);
+    // }
 
     // Allow PID Tuner to iterate
     chassis.pid_tuner_iterate();
@@ -314,6 +319,8 @@ void opcontrol() {
 
     chassis.opcontrol_tank();  // Tank control
 
+    //skills speed, match speed
+
     // Intake Controls
         if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2)) {
             // outtake top, intake bottom
@@ -328,13 +335,13 @@ void opcontrol() {
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1)) {
             // intake both
             height.set_value(true);
-            intake1.move(-127); //*0.75 //*0.85
+            intake1.move(-127);
             intake2.move(127);
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
           // outtake both
-            intake1.move(-127*0.85); //*0.85 //*1
-            intake2.move(-127*0.75); //*0.40 //*0.65
+            intake1.move(-127*0.85); //*0.85 //*0.85
+            intake2.move(-127*0.75); //*0.40 //*0.75
         }
         else{
             height.set_value(false);
