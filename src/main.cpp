@@ -14,7 +14,6 @@
 
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
-
 // Chassis constructor
 ez::Drive chassis(
   // These are your drive motors, the first motor is used for sensing!
@@ -127,10 +126,10 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"Four Block\n\nRight", fourBlockR},    
     {"Four and Three\n\nLeft", fourThreeL},
-    {"Skills\n\nSkills - Auton", skills},
-    {"Test\n\nPid tuning", fourBlockR},
     {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
+    {"Skills\n\nSkills - Auton", test},
     
   });
 
@@ -340,8 +339,8 @@ void opcontrol() {
         }
         else if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_L1)) {
           // outtake both
-            intake1.move(-127*0.85); //*0.85 //*0.85
-            intake2.move(-127*0.75); //*0.40 //*0.75
+            intake1.move(-127); //*1.00 //*0.85
+            intake2.move(-127*0.30); //*0.30 //*0.75
         }
         else{
             height.set_value(false);
