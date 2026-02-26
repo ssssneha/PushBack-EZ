@@ -2,6 +2,7 @@
 
 #include "EZ-Template/api.hpp"
 #include "api.h"
+#include "pros/imu.hpp"
 
 extern Drive chassis;
 
@@ -16,6 +17,8 @@ inline pros::ADIDigitalOut dblPark50('C');
 inline pros::ADIDigitalOut dblPark100('D');
 inline pros::Distance distL(3);
 inline pros::Distance distR(8);
+inline pros::Distance distB(7);
+inline pros::IMU gyro(14);
 
 void toggleHeight();
 void toggleDoinker();

@@ -70,12 +70,12 @@ void intaking(double speed) {
 
 void intakingStore(double speed) {
     intake1.move(-speed);
-    intake2.move(0);
+    intake2.move(10);
 }
 
 void intakeMid(double speed) {
-    intake1.move(-speed*0.7);
-    intake2.move(-speed*0.6);
+    intake1.move(-speed*0.9);
+    intake2.move(-speed*0.45);
 }
 
 void intakeMidSkills(double speed){
@@ -90,8 +90,8 @@ void intakeStop() {
     intake2.brake();
 }
 
-ez::tracking_wheel horiz_tracker(17, 2.00, 0.6); 
-ez::tracking_wheel vert_tracker(-15, 2.00, 2.94);
+ez::tracking_wheel horiz_tracker(17, 2.00, 0.133083); 
+ez::tracking_wheel vert_tracker(-15, 2.00, 2.553130);
 
 
 
@@ -126,10 +126,10 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    {"Four Block\n\nRight", fourBlockR},    
-    {"Four and Three\n\nLeft", fourThreeL},
+    {"Skills\n\nSkills - Auton", skills}, 
+    {"Four Block\n\nRight", fourBlockR}, 
+    {"Four and Three\n\nLeft", fourThreeL},  
     {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
-    {"Skills\n\nSkills - Auton", test},
     
   });
 
@@ -271,11 +271,11 @@ void ez_template_extras() {
       chassis.pid_tuner_toggle();
 
     // Trigger the selected autonomous routine
-    // if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
-    //   pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
-    //   autonomous();
-    //   chassis.drive_brake_set(preference);
-    // }
+    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
+      pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
+      autonomous();
+      chassis.drive_brake_set(preference);
+   }
 
     // Allow PID Tuner to iterate
     chassis.pid_tuner_iterate();
