@@ -70,7 +70,7 @@ void intaking(double speed) {
 
 void intakingStore(double speed) {
     intake1.move(-speed);
-    intake2.move(10);
+    intake2.move(5);
 }
 
 void intakeMid(double speed) {
@@ -126,11 +126,12 @@ void initialize() {
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
+    {"Four Block\n\nRight", fourBlockR},
     {"Skills\n\nSkills - Auton", skills}, 
-    {"Four Block\n\nRight", fourBlockR}, 
-    {"Four and Three\n\nLeft", fourThreeL},  
+    {"Four and Three\n\nLeft", fourThreeL},   
+    {"Four Block\n\nLeft", fourBlockL}, 
+    {"Test!\n\nTest", test},     
     {"8 Blocks\n\nScore 8 blocks in the goal", sevenBlockL},
-    
   });
 
   // Initialize chassis and auton selector
@@ -179,6 +180,7 @@ void autonomous() {
   chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
   chassis.odom_reset();
+
   /*
   Odometry and Pure Pursuit are not magic
 

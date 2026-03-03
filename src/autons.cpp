@@ -472,41 +472,42 @@ void eightBlockM() {
 }
 
 void skills() {
-  /*intakingStore(100);
   toggleHeight();
 
-  chassis.pid_turn_set({-10_in, 24_in}, fwd, 127);
+  /*chassis.pid_turn_set({-10_in, 24_in}, fwd, 127);
   chassis.pid_wait();
 
   chassis.pid_odom_set({{-12_in, 40_in}, fwd, 50});
   chassis.pid_wait();
   
   pros::delay(10);
-  toggleDoinker();
+  
 
   chassis.pid_odom_set({{-11_in, 24_in}, rev, 127});
   chassis.pid_wait();
 
-  chassis.pid_turn_set({-1_in, 35_in}, rev, 127);
+  chassis.pid_turn_set({-2_in, 34_in}, rev, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{-1_in, 35_in}, rev, 70});
+  chassis.pid_odom_set({{-1_in, 34_in}, rev, 70});
   chassis.pid_wait();
 
-  intakeMid(100);
+  /*intakeMid(100);
   pros::delay(1000);
   intakeMid(-127);
   pros::delay(100);
   intakeMid(100);
-  pros::delay(500);
+  pros::delay(500);*/
 
+  intakingStore(200);
+  toggleDoinker();
   chassis.pid_turn_set({-38_in, 0_in}, fwd, 127);
   chassis.pid_wait();
 
   chassis.pid_odom_set({{-38_in, 0_in}, fwd, 127});
   chassis.pid_wait();
 
-  intakingStore(127);
+  intakingStore(200);
 
   chassis.pid_turn_set(180, 127);
   chassis.pid_wait();
@@ -515,7 +516,15 @@ void skills() {
   chassis.pid_odom_set({{-38_in, -20_in}, fwd, 100});
   chassis.pid_wait();
 
-  pros::delay(2000);
+  intakingStore(127);
+  pros::delay(1000);
+  intakingStore(127);
+  pros::delay(200);
+  intakingStore(127);
+  pros::delay(750);
+  intaking(100);
+  pros::delay(100);
+  intakingStore(127);
 
   chassis.pid_odom_set({{-38_in, 0_in}, rev, 127});
   chassis.pid_wait();
@@ -528,6 +537,7 @@ void skills() {
   chassis.pid_wait();
 
   toggleWings();
+  toggleHeight();
   chassis.pid_turn_set({-52_in, 80_in}, rev, 127);
   chassis.pid_wait();
 
@@ -536,6 +546,8 @@ void skills() {
 
   chassis.pid_turn_set(180, 127);
   chassis.pid_wait();
+
+  //////////////////////////// CORNER 2
 
   float x_in = (distR.get_distance()/25.4)+5;
   float y_in = (distB.get_distance()/25.4)+5.7;
@@ -546,13 +558,13 @@ void skills() {
   float target_x = 23;
   float target_y = 49;
 
-  chassis.pid_turn_set({20, y_in+10}, rev, 127);
+  chassis.pid_turn_set({23, y_in+10}, rev, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{20, y_in+10}, rev, 127});
+  chassis.pid_odom_set({{23, y_in+10}, rev, 127});
   chassis.pid_wait();
 
-  chassis.pid_turn_set({20, y_in-10}, rev, 127);
+  chassis.pid_turn_set({24, y_in-10}, rev, 127);
   chassis.pid_wait();
 
   chassis.pid_odom_set({{24, y_in-10}, rev, 127});
@@ -561,51 +573,172 @@ void skills() {
   chassis.pid_turn_set(0, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{23, y_in-12}, rev, 127});
-  chassis.pid_wait_quick();
-
-  chassis.odom_reset();
-  chassis.odom_theta_set(0);
-
-  toggleWing();
+  chassis.pid_odom_set({{24, y_in-11}, rev, 127});
+  chassis.pid_wait();
+  
+  
   intaking(127);
   pros::delay(1000);
-  */
+  intaking(-127);
+  pros::delay(100);
+  intaking(127);
+  pros::delay(1000);
 
 
-  toggleDoinker();
-  toggleHeight();
   intakingStore(127);
+  //////////////////////  CORNER 2
+  toggleWings();               
+  heading = gyro.get_heading();
+  chassis.odom_pose_set({0, 0, heading});
+  toggleDoinker();
 
-  chassis.pid_odom_set({{0_in, 30_in}, fwd, 127});
+  chassis.pid_odom_set({{0_in, 29_in}, fwd, 80});
   chassis.pid_wait();
 
-  pros::delay(1500);
+  intakingStore(127);
+  pros::delay(1000);
+  intakingStore(127);
+  pros::delay(200);
+  intakingStore(127);
+  pros::delay(750);
+  intaking(100);
+  pros::delay(100);
+  intakingStore(127);
 
   chassis.pid_odom_set({{0_in, -1_in}, rev, 127});
   chassis.pid_wait();
 
   intaking(127);
   pros::delay(1000);
-  toggleDoinker();
+  intaking(-127);
+  pros::delay(100);
+  intaking(127);
+  pros::delay(1000);
 
   chassis.pid_odom_set({{0_in, 15_in}, fwd, 127});
   chassis.pid_wait();
 
   intakingStore(127);
+  toggleHeight();
   chassis.pid_turn_set(135,127);
-  chassis.pid_wait();
-
-  chassis.pid_odom_set({{24_in, -2_in}, fwd, 127});
   chassis.pid_wait();
   toggleDoinker();
 
-  chassis.pid_odom_set({{64_in, -2_in}, fwd, 127});
+  chassis.pid_odom_set({{24_in, -14_in}, fwd, 70});
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-135, 127);
+  chassis.pid_odom_set({{96_in, 5_in}, fwd, 127});
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(0, 127);
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{96_in, -2_in}, rev, 127});
+  chassis.pid_wait();
+  toggleHeight();
+
+  toggleWings();
+  toggleDoinker();
+
+  intaking(127);
+  pros::delay(1000);
+  intaking(-127);
+  pros::delay(100);
+  intaking(127);
+  pros::delay(750);
+  intakingStore(127);
+  
+//////////////////////////  Corner 3
+
+  heading = gyro.get_heading();
+  chassis.odom_pose_set({0, 0, heading});
+
+  chassis.pid_odom_set({{0_in, 29_in}, fwd, 80});
+  chassis.pid_wait();
+  toggleHeight();
+  intakingStore(127);
+  pros::delay(1000);
+  intakingStore(127);
+  pros::delay(200);
+  intakingStore(127);
+  pros::delay(750);
+  intaking(100);
+  pros::delay(100);
+  intakingStore(127);
 
 
+  chassis.pid_odom_set({{0_in, 10_in}, rev, 127});
+  chassis.pid_wait();
+  toggleDoinker();
+
+  chassis.pid_odom_set({{12_in, 5_in}, rev, 127});
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(0, 127);
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{17_in, -45_in}, rev, 127});
+  chassis.pid_wait();
+
+  x_in = (distR.get_distance()/25.4)+5;
+  y_in = (distB.get_distance()/25.4)+5.7;
+
+  heading = gyro.get_heading();
+  chassis.odom_pose_set({x_in, y_in, 0});
+
+  chassis.pid_odom_set({{x_in, y_in-20}, rev, 127});
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(90, 127);
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{0, y_in-20}, rev, 127});
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{0, y_in}, rev, 127});
+  chassis.pid_wait();
+  toggleHeight();
+  
+  intaking(127);
+  pros::delay(1000);
+  intaking(-127);
+  pros::delay(200);
+  intaking(127);
+  pros::delay(1000);
+  intaking(100);
+  pros::delay(100);
+  intakingStore(127);
+
+  toggleDoinker();
+
+  pros::delay(500);
+  chassis.pid_odom_set({{0, y_in-45}, fwd, 80});
+  chassis.pid_wait();
+  pros::delay(2000);
+
+  chassis.pid_odom_set({{0, y_in+1}, rev, 127});
+  chassis.pid_wait();
+
+  intaking(127);
+  pros::delay(1000);
+  intaking(-127);
+  pros::delay(100);
+  intaking(127);
+  pros::delay(1000);
+  intakingStore(127);
+
+  chassis.pid_odom_set({{0, y_in-20}, fwd, 127});
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{-25, y_in-40}, fwd, 127});
+  chassis.pid_wait();
+
+  toggleHeight();
+  chassis.pid_turn_set(90, 127);
+  chassis.pid_wait();
+
+  chassis.pid_odom_set({{-45, y_in-44}, fwd, 127});
+  chassis.pid_wait();
 }
 
 void sevenBlockM(){
@@ -765,18 +898,16 @@ void fourBlockR(){
   toggleHeight();
   intakingStore(127);
 
-  chassis.pid_odom_set({{10_in, 25_in}, fwd, 127});
+  chassis.pid_odom_set({{10_in, 25_in}, fwd, 80});
   chassis.pid_wait();
   
-  pros::delay(200);
+  pros::delay(300);
 
   chassis.pid_odom_set({{-28_in, 26_in}, rev, 127});
   chassis.pid_wait();
 
-  intaking(-127);
-  pros::delay(100);
   intaking(127);
-  pros::delay(1525);
+  pros::delay(1500);
   //pros::delay(100);
 
   chassis.pid_odom_set({{-15_in, 26_in}, fwd, 127});
@@ -787,7 +918,46 @@ void fourBlockR(){
   chassis.pid_wait();
   chassis.pid_turn_set({-30_in, 17_in}, rev, 127);
   chassis.pid_wait();
-  chassis.pid_odom_set({{-44_in, 18_in}, rev, 127});
+  chassis.pid_odom_set({{-42_in, 17_in}, rev, 127});
+  chassis.pid_wait();
+  //chassis.pid_turn_set(90, 127);
+  //chassis.pid_wait();
+
+  chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
+}
+
+void fourBlockL(){
+  chassis.pid_odom_set({{0_in, 30_in,}, fwd, 127,});
+  chassis.pid_wait();
+
+  chassis.pid_turn_set(-90_deg, 127);
+  chassis.pid_wait();
+
+  toggleDoinker();
+  toggleHeight();
+  intakingStore(127);
+
+  chassis.pid_odom_set({{-15_in, 31.5_in}, fwd, 80});
+  chassis.pid_wait();
+  
+  pros::delay(400);
+
+  chassis.pid_odom_set({{28_in, 31.5_in}, rev, 100});
+  chassis.pid_wait_quick();
+
+  intaking(127);
+  pros::delay(1525);
+  //pros::delay(100);
+
+  chassis.pid_odom_set({{10_in, 32_in}, fwd, 127});
+  chassis.pid_wait();
+  chassis.pid_turn_set({10_in, 45_in}, rev, 127);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{10_in, 45_in}, rev, 127});
+  chassis.pid_wait();
+  chassis.pid_turn_set({30_in, 43_in}, rev, 127);
+  chassis.pid_wait();
+  chassis.pid_odom_set({{42_in, 42_in}, rev, 127});
 
   chassis.drive_brake_set(pros::E_MOTOR_BRAKE_HOLD);
 }
@@ -806,56 +976,57 @@ void park(){
 }
 
 void test(){
-  chassis.pid_odom_set({{0_in, 24_in}, fwd, 127});
+  chassis.pid_odom_set({{0_in, 5_in}, fwd, 127});
   chassis.pid_wait();
+
 }
 
 void fourThreeL(){
   intakingStore(127);
   toggleHeight();
 
-  chassis.pid_turn_set({-5_in, 24_in}, fwd, 127);
+  chassis.pid_turn_set({-6_in, 24_in}, fwd, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{-10_in, 34_in}, fwd, 50});
+  chassis.pid_odom_set({{-12_in, 36_in}, fwd, 50});
   chassis.pid_wait();
   
-  pros::delay(200);
+  pros::delay(100);
   toggleDoinker();
 
   chassis.pid_odom_set({{-10_in, 0_in}, rev, 127});
   chassis.pid_wait();
 
-  chassis.pid_turn_set({-32_in, 0_in}, rev, 127);
+  chassis.pid_turn_set({-34_in, 0_in}, rev, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{-32_in, 0_in}, rev, 127});
+  chassis.pid_odom_set({{-34_in, 0_in}, rev, 127});
   chassis.pid_wait();
 
-  chassis.pid_turn_set({-32_in, 23_in}, rev, 127);
+  chassis.pid_turn_set({-34_in, 23_in}, rev, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{-32_in, 23_in, 0_deg}, rev, 127});
+  chassis.pid_odom_set({{-35_in, 23_in, 0_deg}, rev, 127});
   chassis.pid_wait();
 
   intaking(127);
   pros::delay(1800);
 
   intakingStore(127);
-  chassis.pid_odom_set({{-33_in, -17_in}, fwd, 100});
+  chassis.pid_odom_set({{-37_in, -17_in}, fwd, 100});
   chassis.pid_wait();
 
   pros::delay(300);
   toggleHeight();
 
-  chassis.pid_odom_set({{-33_in, -5_in}, rev, 127});
+  chassis.pid_odom_set({{-37_in, -5_in}, rev, 127});
   chassis.pid_wait();
 
   chassis.pid_turn_set({8_in, 48_in}, rev, 127);
   chassis.pid_wait();
 
-  chassis.pid_odom_set({{-5_in, 30_in}, rev, 127});
-  chassis.pid_odom_set({{-1_in, 37_in}, rev, 70});
+  chassis.pid_odom_set({{-4_in, 34_in}, rev, 127});
+  chassis.pid_odom_set({{-2_in, 37_in}, rev, 70});
   chassis.pid_wait();
 
   intakeMid(100);
